@@ -2,23 +2,25 @@ name: Daily Commit
 
 on:
   schedule:
-    - cron: "15 10 * * *" # щодня
+    - cron: "15 10 * * *"
   workflow_dispatch:
 
 jobs:
   commit:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Update log
         run: |
-          echo "- Auto update $(date)" >> logs/auto.md
+          mkdir -p logs
+          date >> logs/auto.md
 
-      - name: Commit changes
+      - name: Commit and push
         run: |
           git config user.name "jack25sh"
           git config user.email "jack25sh@outlook.com"
           git add .
-          git commit -m "daily update"
+          git commit -m "daily activity" || echo "No changes"
           git push
